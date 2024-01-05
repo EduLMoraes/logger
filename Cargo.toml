@@ -5,6 +5,7 @@ edition = "2021"
 author  = "EduLMoraes <lmoraeseduardo@gmail.com>"
 license = "MIT/Apache-2.0"
 documentation = "./target/doc/src/logger/lib.rs.html"
+description = "This is my first package in crate.io, this is a package for logging our projects. He receive message and create the log file in path passed how parameter."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
