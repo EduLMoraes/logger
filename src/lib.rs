@@ -1,6 +1,6 @@
 use std::ffi::OsStr;
 use std::fs::{self, File, OpenOptions};
-use std::io::{Read, Seek, Write};
+use std::io::{Seek, Write};
 use std::path::Path;
 use std::{fs::create_dir_all, path::PathBuf};
 
@@ -17,6 +17,7 @@ use std::{fs::create_dir_all, path::PathBuf};
 /// Example usage:
 /// ```
 /// use std::fs::File;
+/// use logger::mkdir;
 /// 
 /// match mkdir("path/to/directory") {
 ///     Ok((file, path)) => {
@@ -27,7 +28,7 @@ use std::{fs::create_dir_all, path::PathBuf};
 /// }
 /// ```
 ///
-fn mkdir(path: &str) -> Result<(File, String), String> {
+pub fn mkdir(path: &str) -> Result<(File, String), String> {
     let mut new_path: String = String::new();
 
     let paths: Vec<&str> = path.split('/').collect();
@@ -91,28 +92,30 @@ fn mkdir(path: &str) -> Result<(File, String), String> {
 }
 
 
-/// This code snippet defines a function `log` that takes a `PathBuf` and a `&str` as input parameters and returns a `Result<(), String>`. 
-
-/// The function first checks if the given path is empty or if it doesn't have a ".txt" extension. If either of these conditions is true, it returns an error with the message "Path is empty".
-
-/// If the path is valid, the function tries to open the file specified by the path in read and write mode. If the file exists, it reads its contents into a `String` variable called `log_file`, seeks to the beginning of the file, appends the given message to `log_file`, and then writes the updated `log_file` back to the file.
-
-/// If the file doesn't exist, the function calls the `mkdir` function to create the necessary directories and returns the result. If `mkdir` succeeds, the function recursively calls itself with the newly created file path and the original message.
-
-/// If any error occurs during the file operations, the function returns an error with the corresponding error message.
-
-/// The function also prints the result of the file write operation and any error messages encountered during the process.
-
-/// Example usage:
+/// This code snippet defines a function `log` that logs a message to a file specified by the `path` parameter.
+/// 
+/// # Arguments
+/// 
+/// * `path` - A `PathBuf` representing the path to the log file.
+/// * `message` - A string slice containing the message to be logged.
+/// 
+/// # Returns
+/// 
+/// * `Ok(())` - If the log operation is successful.
+/// * `Err(String)` - If there is an error during the log operation.
+/// 
+/// # Examples
+/// 
 /// ```
 /// use std::path::PathBuf;
+/// use logger::log;
 /// 
-/// let path = PathBuf::from("path/to/file.txt");
+/// let path = PathBuf::from("log.txt");
 /// let message = "This is a log message";
 /// 
 /// match log(path, message) {
-///     Ok(_) => println!("Log successfully written to file"),
-///     Err(e) => println!("Error writing log: {}", e),
+///     Ok(()) => println!("Log operation successful"),
+///     Err(e) => println!("Error during log operation: {}", e),
 /// }
 /// ```
 ///
@@ -126,8 +129,8 @@ pub fn log(path: PathBuf, message: &str) -> Result<(), String> {
         Ok(mut file) => {
             let mut log_file = String::new();
 
-            file.read_to_string(&mut log_file).unwrap();
-            file.seek(std::io::SeekFrom::Start(0)).unwrap();
+            // file.read_to_string(&mut log_file).unwrap();
+            file.seek(std::io::SeekFrom::End(0)).unwrap();
 
             log_file.push_str(&message);
 
