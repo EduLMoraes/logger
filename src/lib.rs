@@ -120,8 +120,8 @@ pub fn mkdir(path: &str) -> Result<(File, String), String> {
 /// ```
 ///
 pub fn log(path: PathBuf, message: &str) -> Result<(), String> {
-    if path.as_path().to_str().unwrap().is_empty() || path.extension() != Some(&OsStr::new("txt")) {
-        println!("invalido");
+    if path.as_path().to_str().unwrap().is_empty() || ( path.extension() != Some(&OsStr::new("txt")) && path.extension() != Some(&OsStr::new("log")) ) {
+        println!("Path invalido");
         return Err("Path is empty".to_string());
     }
 
