@@ -63,7 +63,6 @@ pub fn mkdir(path: &str) -> Result<(File, String), String> {
                         path.insert_str(limit, format!("({count_files})").trim());
                         is_alterated = true;
                     }
-                    println!("{path}");
                 } else if count_files > 0 {
                     if is_alterated {
                         path.replace_range(limit..limit + 4, format!("({count_files})").trim());
@@ -71,7 +70,6 @@ pub fn mkdir(path: &str) -> Result<(File, String), String> {
                         path.insert_str(limit, format!("({count_files})").trim());
                         is_alterated = true;
                     }
-                    println!("{path}");
                 }
 
                 match fs::metadata(path.clone()) {
@@ -121,7 +119,6 @@ pub fn mkdir(path: &str) -> Result<(File, String), String> {
 ///
 pub fn log(path: PathBuf, message: &str) -> Result<(), String> {
     if path.as_path().to_str().unwrap().is_empty() || ( path.extension() != Some(&OsStr::new("txt")) && path.extension() != Some(&OsStr::new("log")) ) {
-        println!("Path invalido");
         return Err("Path is empty".to_string());
     }
 
@@ -138,7 +135,6 @@ pub fn log(path: PathBuf, message: &str) -> Result<(), String> {
                 .write_all(log_file.as_bytes())
                 .map_err(|e| e.to_string());
 
-            println!("{result:?}");
 
             match result {
                 Ok(_) => Ok(()),
